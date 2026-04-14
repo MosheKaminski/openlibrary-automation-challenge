@@ -1,0 +1,83 @@
+"""Account reading list page."""
+
+from __future__ import annotations
+
+import asyncio
+import re
+
+from playwright.async_api import Page
+
+from constants import BASE_URL
+from pages.base_page import BasePage
+
+_WANT_TITLE_COUNT = re.compile(r"Want\s+to\s+Read\s*\((\d+)\)", re.I)
+_WANT_META_COUNT = re.compile(
+    r"(?:wants to read|want to read)\s+(\d+)\s+books",
+    re.I,
+)
+_PEOPLE_BOOKS = re.compile(r"/people/([^/]+)/books/")
+
+
+class ReadingListPage(BasePage):
+    """Counts items on a shelf (e.g. Want to Read)."""
+
+    def __init__(self, page: Page) -> None:
+        super().__init__(page)
+        self._shelf_rows = ".mybooks-list ul.list-books li.searchResultItem"
+
+    async def open_want_to_read(self) -> None:
+        await self.goto(f"{BASE_URL}/account/books/want-to-read")
+        await self.page.wait_for_url("**/people/*/books/want-to-read*", timeout=30_000)
+
+    async def assert_want_shelf_count(self, expected: int) -> None:
+        """Open Want to Read and assert the shelf total matches ``expected``."""
+        await self.open_want_to_read()
+        actual = await self.count_books()
+        assert actual == expected, f"Expected {expected}, got {actual}"
+
+    async def count_books(self) -> int:
+        """Total books on the Want shelf (prefer stable meta/title; avoid max() across flaky API/DOM)."""
+        if "/people/" not in self.page.url or "want-to-read" not in self.page.url:
+            await self.open_want_to_read()
+        await self.page.wait_for_load_state("load")
+        await self.page.locator(".mybooks").first.wait_for(state="visible", timeout=30_000)
+        await self.page.wait_for_load_state("networkidle")
+        for _ in range(25):
+            try:
+                desc = await self.page.locator('meta[name="description"]').first.get_attribute(
+                    "content"
+                )
+                if desc:
+                    dm = _WANT_META_COUNT.search(desc)
+                    if dm:
+                        return int(dm.group(1))
+            except Exception:
+                pass
+            tm = _WANT_TITLE_COUNT.search(await self.page.title())
+            if tm:
+                return int(tm.group(1))
+            await asyncio.sleep(0.15)
+        um = _PEOPLE_BOOKS.search(self.page.url)
+        if not um:
+            return 0
+        json_url = f"{BASE_URL}/people/{um.group(1)}/books/want-to-read.json"
+        try:
+            resp = await self.page.context.request.get(json_url)
+            if resp.ok:
+                jd = await resp.json()
+                if isinstance(jd, dict) and "numFound" in jd:
+                    return int(jd["numFound"])
+        except Exception:
+            pass
+        try:
+            raw = (
+                await self.page.locator(
+                    ".mybooks-menu a[href*='/books/want-to-read'] span.li-count"
+                )
+                .first.inner_text()
+            ).strip()
+            if raw.isdigit():
+                return int(raw)
+        except Exception:
+            pass
+        return await self.page.locator(self._shelf_rows).count()
