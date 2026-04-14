@@ -37,14 +37,19 @@ See `env.example` for variable names.
 
 ## Shelf assertions
 
-`add_books_to_reading_list` picks **Want to Read** or **Already Read** at random. After a run, use `last_shelf_add_stats()` from `shelf_add_stats` and assert the **Want to Read** shelf count against `want_to_read`, not `len(urls)`.
+`add_books_to_reading_list` is deterministic by default (`random_shelves=False`, Want shelf). If randomness is enabled, use `last_shelf_add_stats()` from `shelf_add_stats` and assert the **Want to Read** shelf count against `want_to_read`, not `len(urls)`.
+
+## Architecture (OOP + POM)
+
+The project uses a 3-layer OOP design: page objects in `src/pages/` handle UI interactions, workflows in `src/workflows/` orchestrate business scenarios, and `src/flows.py` exposes a thin stable API for tests. We chose this architecture to keep tests readable, reduce coupling to UI changes, and localize flaky-site handling (waits/fallbacks) in one place instead of spreading it across test files.
 
 ## Layout
 
 - `src/pages/` — page objects (including `LoginPage`, `BookDetailPage`, search and shelf pages).
-- `src/flows.py` — assignment-facing flows.
+- `src/workflows/` — orchestration classes that compose page objects per use-case.
+- `src/flows.py` — thin assignment-facing API functions.
 - `src/reporting/performance.py` — timing helpers and JSON report writer.
-- `data/` — external inputs (YAML/JSON).
+- `data/` — external inputs (YAML/JSON/CSV via `DataLoader`).
 
 ## Assignment artifacts
 
