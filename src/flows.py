@@ -34,9 +34,14 @@ async def add_books_to_reading_list(
     await ReadingLogWorkflow(page).add_urls(urls, random_shelves=random_shelves)
 
 
-async def assert_reading_list_count(page: Page, expected_count: int) -> None:
-    """Open Want to Read shelf and assert visible book count."""
-    await ReadingListPage(page).assert_want_shelf_count(expected_count)
+async def assert_reading_list_count(
+    page: Page,
+    expected_count: int,
+    *,
+    shelf: str = "want-to-read",
+) -> None:
+    """Open selected shelf and assert visible book count."""
+    await ReadingListPage(page).assert_shelf_count(expected_count, shelf=shelf)
 
 
 async def clear_reading_lists(page: Page) -> int:

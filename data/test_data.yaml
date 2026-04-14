@@ -4,6 +4,13 @@ search:
   max_year: 1980
   limit: 5
 
-performance:
-  sample_url: "https://openlibrary.org"
-  threshold_ms: 5000
+performance_points:
+  - name: "search"
+    url: "https://openlibrary.org/search?q=dune"
+    threshold_ms: 3000
+  - name: "book"
+    url: "https://openlibrary.org/works/OL82563W"
+    threshold_ms: 2500
+  - name: "reading-list"
+    url: "https://openlibrary.org/account/books/want-to-read"
+    threshold_ms: 2000

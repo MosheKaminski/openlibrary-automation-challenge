@@ -1,14 +1,37 @@
 {
   "measurements": [
     {
-      "url": "https://openlibrary.org",
-      "first_paint_ms": 2208.0,
-      "dom_content_loaded_ms": 3450.4000000059605,
-      "load_event_ms": 3450.800000011921,
+      "url": "https://openlibrary.org/search?q=dune",
+      "first_paint_ms": 4208.0,
+      "dom_content_loaded_ms": 5042.29999999702,
+      "load_event_ms": 5847.5999999940395,
       "timing_source": "navigation-entry",
-      "load_time_ms": 3456.061699995189,
-      "threshold_ms": 5000,
-      "http_status": 200
+      "load_time_ms": 5867.1019000175875,
+      "threshold_ms": 3000,
+      "http_status": 200,
+      "name": "search"
+    },
+    {
+      "url": "https://openlibrary.org/works/OL82563W",
+      "first_paint_ms": 2556.0,
+      "dom_content_loaded_ms": 2636.6000000089407,
+      "load_event_ms": 3573.800000011921,
+      "timing_source": "navigation-entry",
+      "load_time_ms": 3581.8910999805667,
+      "threshold_ms": 2500,
+      "http_status": 200,
+      "name": "book"
+    },
+    {
+      "url": "https://openlibrary.org/account/books/want-to-read",
+      "first_paint_ms": 1792.0,
+      "dom_content_loaded_ms": 1688.2999999970198,
+      "load_event_ms": 1978.2000000029802,
+      "timing_source": "navigation-entry",
+      "load_time_ms": 1985.3532000270206,
+      "threshold_ms": 2000,
+      "http_status": 200,
+      "name": "reading-list"
     }
   ],
   "runs": [
@@ -54,6 +77,82 @@
           "load_time_ms": 3456.061699995189,
           "threshold_ms": 5000,
           "http_status": 200
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T16:15:46.433188+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 4180.0,
+          "dom_content_loaded_ms": 4798.800000011921,
+          "load_event_ms": 5615.0,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5633.433800016064,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 2236.0,
+          "dom_content_loaded_ms": 2491.8999999910593,
+          "load_event_ms": 3395.699999988079,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3402.8535000106785,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 1540.0,
+          "dom_content_loaded_ms": 1474.5,
+          "load_event_ms": 1784.5,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 1792.4625000159722,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T16:23:08.816968+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 4208.0,
+          "dom_content_loaded_ms": 5042.29999999702,
+          "load_event_ms": 5847.5999999940395,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5867.1019000175875,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 2556.0,
+          "dom_content_loaded_ms": 2636.6000000089407,
+          "load_event_ms": 3573.800000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3581.8910999805667,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 1792.0,
+          "dom_content_loaded_ms": 1688.2999999970198,
+          "load_event_ms": 1978.2000000029802,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 1985.3532000270206,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
         }
       ]
     }

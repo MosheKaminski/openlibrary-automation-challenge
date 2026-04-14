@@ -8,7 +8,6 @@ import allure
 import pytest
 
 from utils.session_paths import resolve_storage_state_path
-from pages.reading_list_page import ReadingListPage
 from flows import (
     add_books_to_reading_list,
     assert_reading_list_count,
@@ -64,5 +63,4 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
         )
 
     with allure.step("Verify shelf count"):
-        expected_visible = await ReadingListPage(page).count_books()
-        await assert_reading_list_count(page, expected_count=expected_visible)
+        await assert_reading_list_count(page, expected_count=len(urls))

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import platform
 import sys
 from pathlib import Path
@@ -43,9 +44,11 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
 async def page() -> Page:
     """One browser context per test; loads session from resolve_storage_state_path()."""
     state_path = resolve_storage_state_path()
+    headless_raw = os.getenv("PLAYWRIGHT_HEADLESS", "true").strip().lower()
+    headless = headless_raw not in {"0", "false", "no", "off"}
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(headless=headless)
         context_kwargs = {}
         if state_path is not None:
             context_kwargs["storage_state"] = str(state_path)
