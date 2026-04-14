@@ -28,9 +28,9 @@ async def add_books_to_reading_list(
     page: Page,
     urls: list[str],
     *,
-    random_shelves: bool = True,
+    random_shelves: bool = False,
 ) -> None:
-    """Visit each URL, add to reading log (random shelves by default), log and screenshot."""
+    """Visit each URL, add to reading log (Want-only by default), log and screenshot."""
     await ReadingLogWorkflow(page).add_urls(urls, random_shelves=random_shelves)
 
 

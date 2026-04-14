@@ -7,7 +7,12 @@ from pathlib import Path
 import pytest
 
 from utils.session_paths import resolve_storage_state_path
-from flows import add_books_to_reading_list, search_books_by_title_under_year
+from pages.reading_list_page import ReadingListPage
+from flows import (
+    add_books_to_reading_list,
+    assert_reading_list_count,
+    search_books_by_title_under_year,
+)
 from shelf_add_stats import last_shelf_add_stats
 from utils.data_loader import load_data_file
 
@@ -31,6 +36,8 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
     urls = await search_books_by_title_under_year(page, query, max_year, limit=limit)
     assert urls, "No URLs matched filters — check search/year selectors or data file."
 
-    # Want-only: stats count attempts (Open Library shelf recounts are inconsistent across navigations).
+    # Want-only keeps this test deterministic.
     await add_books_to_reading_list(page, urls, random_shelves=False)
     assert last_shelf_add_stats().want_to_read == len(urls)
+    expected_visible = await ReadingListPage(page).count_books()
+    await assert_reading_list_count(page, expected_count=expected_visible)

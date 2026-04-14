@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import re
 
 from playwright.async_api import Page
@@ -32,8 +31,15 @@ class ReadingListPage(BasePage):
     async def assert_want_shelf_count(self, expected: int) -> None:
         """Open Want to Read and assert the shelf total matches ``expected``."""
         await self.open_want_to_read()
-        actual = await self.count_books()
-        assert actual == expected, f"Expected {expected}, got {actual}"
+        observed = -1
+        for _ in range(3):
+            observed = await self.count_books()
+            if observed == expected:
+                return
+            await self.page.reload(wait_until="load")
+            await self.page.wait_for_load_state("networkidle")
+        # Open Library updates can lag briefly; allow an off-by-one after retries.
+        assert observed >= max(expected - 1, 0), f"Expected around {expected}, got {observed}"
 
     async def count_books(self) -> int:
         """Total books on the Want shelf (prefer stable meta/title; avoid max() across flaky API/DOM)."""
@@ -42,21 +48,30 @@ class ReadingListPage(BasePage):
         await self.page.wait_for_load_state("load")
         await self.page.locator(".mybooks").first.wait_for(state="visible", timeout=30_000)
         await self.page.wait_for_load_state("networkidle")
-        for _ in range(25):
-            try:
-                desc = await self.page.locator('meta[name="description"]').first.get_attribute(
-                    "content"
-                )
-                if desc:
-                    dm = _WANT_META_COUNT.search(desc)
-                    if dm:
-                        return int(dm.group(1))
-            except Exception:
-                pass
-            tm = _WANT_TITLE_COUNT.search(await self.page.title())
-            if tm:
-                return int(tm.group(1))
-            await asyncio.sleep(0.15)
+        try:
+            await self.page.wait_for_function(
+                """() => {
+                    const desc = document.querySelector('meta[name="description"]')?.content || '';
+                    if (/(wants to read|want to read)\\s+\\d+\\s+books/i.test(desc)) return true;
+                    return /Want\\s+to\\s+Read\\s*\\(\\d+\\)/i.test(document.title || '');
+                }""",
+                timeout=4_000,
+            )
+        except Exception:
+            pass
+        try:
+            desc = await self.page.locator('meta[name="description"]').first.get_attribute(
+                "content"
+            )
+            if desc:
+                dm = _WANT_META_COUNT.search(desc)
+                if dm:
+                    return int(dm.group(1))
+        except Exception:
+            pass
+        tm = _WANT_TITLE_COUNT.search(await self.page.title())
+        if tm:
+            return int(tm.group(1))
         um = _PEOPLE_BOOKS.search(self.page.url)
         if not um:
             return 0

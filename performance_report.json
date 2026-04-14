@@ -1,0 +1,14 @@
+{
+  "measurements": [
+    {
+      "url": "https://openlibrary.org",
+      "first_paint_ms": 2088.0,
+      "dom_content_loaded_ms": 2773.0,
+      "load_event_ms": 4682.79999999702,
+      "timing_source": "navigation-entry",
+      "load_time_ms": 4693.766800002777,
+      "threshold_ms": 5000,
+      "http_status": 200
+    }
+  ]
+}

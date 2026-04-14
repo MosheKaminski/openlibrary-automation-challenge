@@ -24,10 +24,20 @@ async def measure_page_performance(page: Page, url: str, threshold_ms: int) -> d
 
     timing = await page.evaluate(
         """() => {
+            const nav = performance.getEntriesByType('navigation')[0];
+            if (nav) {
+                return {
+                    dom_content_loaded_ms: nav.domContentLoadedEventEnd,
+                    load_event_ms: nav.loadEventEnd,
+                    source: 'navigation-entry',
+                };
+            }
+            // Legacy fallback for environments that do not expose Navigation Timing L2.
             const p = performance.timing;
             return {
                 dom_content_loaded_ms: p.domContentLoadedEventEnd - p.navigationStart,
                 load_event_ms: p.loadEventEnd - p.navigationStart,
+                source: 'performance.timing',
             };
         }"""
     )
@@ -48,6 +58,8 @@ async def measure_page_performance(page: Page, url: str, threshold_ms: int) -> d
         "url": url,
         "first_paint_ms": first_paint_val,
         "dom_content_loaded_ms": dom_loaded,
+        "load_event_ms": float(timing["load_event_ms"]),
+        "timing_source": str(timing["source"]),
         "load_time_ms": load_time_ms,
         "threshold_ms": threshold_ms,
         "http_status": response.status if response else None,

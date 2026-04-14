@@ -210,5 +210,4 @@ __marimo__/
 reports/
 allure-results/
 allure-report/
-performance_report.json
 storage_state.json
