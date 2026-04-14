@@ -47,7 +47,17 @@ class LoginPage(BasePage):
             await _do_submit()
             await self.page.wait_for_load_state("networkidle")
 
-        await self.page.wait_for_timeout(500)
+        try:
+            await self.page.wait_for_function(
+                """() => {
+                    const isLoginUrl = /\\/account\\/login/.test(window.location.pathname || '');
+                    const hasUserInput = !!document.querySelector('input[name="username"]');
+                    return !(isLoginUrl && hasUserInput);
+                }""",
+                timeout=3_000,
+            )
+        except Exception:
+            pass
 
         if await self._still_on_login_form():
             await self._raise_login_failed()

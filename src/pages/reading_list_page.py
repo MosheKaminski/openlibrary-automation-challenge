@@ -101,8 +101,7 @@ class ReadingListPage(BasePage):
                 await self.page.wait_for_load_state("networkidle", timeout=4_000)
             except Exception:
                 pass
-        # Open Library updates can lag briefly; allow an off-by-one after retries.
-        assert observed >= max(expected - 1, 0), f"Expected around {expected}, got {observed}"
+        assert observed == expected, f"Expected {expected}, got {observed}"
 
     async def assert_want_shelf_count(self, expected: int) -> None:
         await self.assert_shelf_count(expected, shelf="want-to-read")

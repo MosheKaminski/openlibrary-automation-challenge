@@ -9,12 +9,13 @@ import allure
 import pytest
 
 from constants import BASE_URL
-from reporting.performance import measure_page_performance, write_performance_report
+from flows import measure_page_performance
+from reporting.performance import write_performance_report
 from utils.data_loader import load_data_file
 
 
 @pytest.mark.asyncio
-async def test_performance_report_json_is_written(page) -> None:
+async def test_performance_report_json_is_written() -> None:
     data = load_data_file(Path("data/test_data.yaml"))
     perf_points = data.get("performance_points")
     if not isinstance(perf_points, list) or not perf_points:
@@ -34,7 +35,7 @@ async def test_performance_report_json_is_written(page) -> None:
         url = str(point["url"])
         threshold_ms = int(point["threshold_ms"])
         with allure.step(f"Measure performance for {name}"):
-            row = await measure_page_performance(page, url, threshold_ms)
+            row = await measure_page_performance(url, threshold_ms)
             row["name"] = name
             rows.append(row)
         allure.attach(

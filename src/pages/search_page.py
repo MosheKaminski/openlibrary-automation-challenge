@@ -88,10 +88,7 @@ class SearchPage(BasePage):
                 for item in legacy:
                     if len(collected) >= limit:
                         break
-                    year_el = await item.query_selector(".bookEditions")
-                    if not year_el:
-                        continue
-                    year_text = (await year_el.inner_text()).strip()
+                    year_text = (await item.inner_text()).strip()
                     match = _YEAR_FALLBACK.search(year_text)
                     if not match:
                         continue
@@ -131,9 +128,11 @@ class SearchPage(BasePage):
             if used_search_json:
                 break
 
-            next_handle = await self.page.query_selector("a[rel='next']")
+            next_handle = await self.page.query_selector(
+                "a[title='Next'], a[aria-label='Next'], .pagination a:has-text('Next')"
+            )
             if not next_handle:
-                next_handle = await self.page.query_selector(".next-page")
+                next_handle = await self.page.query_selector("a.next, .next-page")
             if next_handle and len(collected) < limit:
                 await next_handle.click()
                 await self.page.wait_for_load_state("domcontentloaded")

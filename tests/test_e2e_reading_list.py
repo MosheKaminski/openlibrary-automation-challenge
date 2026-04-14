@@ -21,7 +21,7 @@ _DATA = Path("data/test_data.yaml")
 
 
 @pytest.mark.asyncio
-async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
+async def test_search_add_books_verify_want_to_read_shelf() -> None:
     if resolve_storage_state_path() is None:
         pytest.skip(
             "No session file. Run: python scripts/save_storage_state.py "
@@ -36,7 +36,7 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
         limit = int(search_cfg.get("limit", 5))
 
     with allure.step("Clear existing Want-to-Read list"):
-        removed = await clear_reading_lists(page)
+        removed = await clear_reading_lists()
         allure.attach(
             str(removed),
             name="removed_before_run",
@@ -44,7 +44,7 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
         )
 
     with allure.step("Search candidate books"):
-        urls = await search_books_by_title_under_year(page, query, max_year, limit=limit)
+        urls = await search_books_by_title_under_year(query, max_year, limit=limit)
         assert urls, "No URLs matched filters — check search/year selectors or data file."
         allure.attach(
             "\n".join(urls),
@@ -53,7 +53,7 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
         )
 
     with allure.step("Add books to Want-to-Read shelf"):
-        await add_books_to_reading_list(page, urls, random_shelves=False)
+        await add_books_to_reading_list(urls, random_shelves=False)
         stats = last_shelf_add_stats()
         assert stats.want_to_read == len(urls)
         allure.attach(
@@ -63,4 +63,4 @@ async def test_search_add_books_verify_want_to_read_shelf(page) -> None:
         )
 
     with allure.step("Verify shelf count"):
-        await assert_reading_list_count(page, expected_count=len(urls))
+        await assert_reading_list_count(expected_count=len(urls))
