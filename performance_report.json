@@ -2,13 +2,60 @@
   "measurements": [
     {
       "url": "https://openlibrary.org",
-      "first_paint_ms": 2088.0,
-      "dom_content_loaded_ms": 2773.0,
-      "load_event_ms": 4682.79999999702,
+      "first_paint_ms": 2208.0,
+      "dom_content_loaded_ms": 3450.4000000059605,
+      "load_event_ms": 3450.800000011921,
       "timing_source": "navigation-entry",
-      "load_time_ms": 4693.766800002777,
+      "load_time_ms": 3456.061699995189,
       "threshold_ms": 5000,
       "http_status": 200
+    }
+  ],
+  "runs": [
+    {
+      "created_at": "2026-04-14T14:27:42.244934+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org",
+          "first_paint_ms": 1964.0,
+          "dom_content_loaded_ms": 3191.4000000059605,
+          "load_event_ms": 3191.5999999940395,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3202.439400003641,
+          "threshold_ms": 5000,
+          "http_status": 200
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T14:31:21.777442+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org",
+          "first_paint_ms": 2056.0,
+          "dom_content_loaded_ms": 3282.4000000059605,
+          "load_event_ms": 3282.9000000059605,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3292.841899994528,
+          "threshold_ms": 5000,
+          "http_status": 200
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T14:35:24.080488+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org",
+          "first_paint_ms": 2208.0,
+          "dom_content_loaded_ms": 3450.4000000059605,
+          "load_event_ms": 3450.800000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3456.061699995189,
+          "threshold_ms": 5000,
+          "http_status": 200
+        }
+      ]
     }
   ]
 }

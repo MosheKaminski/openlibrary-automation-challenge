@@ -39,6 +39,11 @@ async def assert_reading_list_count(page: Page, expected_count: int) -> None:
     await ReadingListPage(page).assert_want_shelf_count(expected_count)
 
 
+async def clear_reading_lists(page: Page) -> int:
+    """Best-effort cleanup for deterministic runs; returns removed Want entries."""
+    return await ReadingListPage(page).clear_want_to_read()
+
+
 async def measure_page_performance(page: Page, url: str, threshold_ms: int) -> dict:
     """Delegate to reporting module (single place for metrics + JSON schema)."""
     from reporting import performance as perf

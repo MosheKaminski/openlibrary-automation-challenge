@@ -28,6 +28,49 @@ class ReadingListPage(BasePage):
         await self.goto(f"{BASE_URL}/account/books/want-to-read")
         await self.page.wait_for_url("**/people/*/books/want-to-read*", timeout=30_000)
 
+    async def clear_want_to_read(self, *, max_items: int = 50) -> int:
+        """Best-effort cleanup of Want shelf entries before a deterministic run."""
+        await self.open_want_to_read()
+        removed = 0
+        for _ in range(max_items):
+            before = await self.count_books()
+            if before <= 0:
+                break
+            row = self.page.locator(self._shelf_rows).first
+            if await row.count() == 0:
+                break
+            remove_btn = row.locator(
+                "form.reading-log button[type='submit'], "
+                "button:has-text('Remove'), a:has-text('Remove')"
+            ).first
+            if await remove_btn.count() == 0:
+                break
+            await remove_btn.click()
+            try:
+                await self.page.wait_for_function(
+                    """() => {
+                        const body = document.body?.innerText || '';
+                        return !/\\bSaving\\b/i.test(body);
+                    }""",
+                    timeout=4_000,
+                )
+            except Exception:
+                pass
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=4_000)
+            except Exception:
+                pass
+            await self.page.reload(wait_until="load")
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=4_000)
+            except Exception:
+                pass
+            after = await self.count_books()
+            if after >= before:
+                break
+            removed += before - after
+        return removed
+
     async def assert_want_shelf_count(self, expected: int) -> None:
         """Open Want to Read and assert the shelf total matches ``expected``."""
         await self.open_want_to_read()
@@ -37,7 +80,10 @@ class ReadingListPage(BasePage):
             if observed == expected:
                 return
             await self.page.reload(wait_until="load")
-            await self.page.wait_for_load_state("networkidle")
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=4_000)
+            except Exception:
+                pass
         # Open Library updates can lag briefly; allow an off-by-one after retries.
         assert observed >= max(expected - 1, 0), f"Expected around {expected}, got {observed}"
 
@@ -47,7 +93,10 @@ class ReadingListPage(BasePage):
             await self.open_want_to_read()
         await self.page.wait_for_load_state("load")
         await self.page.locator(".mybooks").first.wait_for(state="visible", timeout=30_000)
-        await self.page.wait_for_load_state("networkidle")
+        try:
+            await self.page.wait_for_load_state("networkidle", timeout=4_000)
+        except Exception:
+            pass
         try:
             await self.page.wait_for_function(
                 """() => {
