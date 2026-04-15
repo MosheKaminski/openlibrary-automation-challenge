@@ -5,6 +5,7 @@ Thin delegates to workflow classes (OOP) that compose page objects (POM).
 
 from __future__ import annotations
 
+import os
 from collections.abc import Awaitable, Callable
 from typing import Any, TypeVar
 
@@ -18,11 +19,16 @@ from workflows.reading_log_workflow import ReadingLogWorkflow
 T = TypeVar("T")
 
 
+def _playwright_headless() -> bool:
+    raw = os.getenv("PLAYWRIGHT_HEADLESS", "true").strip().lower()
+    return raw not in {"0", "false", "no", "off"}
+
+
 async def _run_with_page(fn: Callable[[Page], Awaitable[T]]) -> T:
     """Create isolated browser/page for spec-facing flow functions."""
     state_path = resolve_storage_state_path()
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(headless=_playwright_headless())
         context_kwargs: dict[str, Any] = {}
         if state_path is not None:
             context_kwargs["storage_state"] = str(state_path)
@@ -86,6 +92,14 @@ async def clear_reading_lists() -> int:
     """Best-effort cleanup for deterministic runs; returns removed Want entries."""
     async def _impl(page: Page) -> int:
         return await ReadingListPage(page).clear_want_to_read()
+
+    return await _run_with_page(_impl)
+
+
+async def clear_already_read_list() -> int:
+    """Best-effort cleanup of Already Read shelf; returns removed entry count."""
+    async def _impl(page: Page) -> int:
+        return await ReadingListPage(page).clear_already_read()
 
     return await _run_with_page(_impl)
 

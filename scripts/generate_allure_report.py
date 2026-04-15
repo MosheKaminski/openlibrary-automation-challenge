@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""Build static Allure HTML from ``allure-results`` (needs Allure CLI or Node ``npx``)."""
+"""Build static Allure HTML from ``reports/allure-results`` (needs Allure CLI or Node ``npx``)."""
 
 from __future__ import annotations
 
@@ -9,8 +8,13 @@ import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[1]
-_RESULTS = _REPO / "allure-results"
-_OUTPUT = _REPO / "allure-report"
+if str(_REPO / "src") not in sys.path:
+    sys.path.insert(0, str(_REPO / "src"))
+
+from utils.report_paths import ALLURE_REPORT_DIR, ALLURE_RESULTS_DIR
+
+_RESULTS = ALLURE_RESULTS_DIR
+_OUTPUT = ALLURE_REPORT_DIR
 
 
 def _run(cmd: list[str]) -> bool:
@@ -24,7 +28,7 @@ def _run(cmd: list[str]) -> bool:
 def main() -> int:
     if not _RESULTS.is_dir() or not any(_RESULTS.iterdir()):
         print(
-            "No allure-results found. Run: python -m pytest tests",
+            "No reports/allure-results found. Run: python -m pytest tests",
             file=sys.stderr,
         )
         return 1
@@ -40,8 +44,8 @@ def main() -> int:
                 "--clean",
             ]
         ):
-            print(f"Opened report folder: {_OUTPUT}")
-            print(f"Open in browser: {_OUTPUT / 'index.html'}")
+            print(f"Report folder: {_OUTPUT}")
+            print(f"Served best via HTTP, e.g.: cd {_OUTPUT} && python -m http.server 8080")
             return 0
 
     npx = shutil.which("npx")
@@ -58,7 +62,8 @@ def main() -> int:
                 "--clean",
             ]
         ):
-            print(f"Open in browser: {_OUTPUT / 'index.html'}")
+            print(f"Report folder: {_OUTPUT}")
+            print(f"Served best via HTTP, e.g.: cd {_OUTPUT} && python -m http.server 8080")
             return 0
 
     print(

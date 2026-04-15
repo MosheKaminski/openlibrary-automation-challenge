@@ -1,16 +1,3 @@
-"""
-Save Playwright storage state after Open Library login.
-Run from repo root with PYTHONPATH including src, and OL_EMAIL / OL_PASSWORD set.
-
-Loads optional repo-root .env (OL_EMAIL, OL_PASSWORD, STORAGE_STATE_PATH, PLAYWRIGHT_HEADLESS).
-
-Example (PowerShell) without .env:
-  $env:PYTHONPATH = "src"
-  $env:OL_EMAIL = "you@example.com"
-  $env:OL_PASSWORD = "secret"
-  python scripts/save_storage_state.py
-"""
-
 from __future__ import annotations
 
 import asyncio
@@ -27,8 +14,8 @@ try:
 except ImportError:
     load_dotenv = None
 
-from constants import BASE_URL  # noqa: E402
-from pages.login_page import LoginPage  # noqa: E402
+from constants import BASE_URL
+from pages.login_page import LoginPage
 
 
 async def main() -> None:

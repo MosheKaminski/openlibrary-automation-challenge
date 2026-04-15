@@ -9,7 +9,7 @@ from playwright.async_api import Page, TimeoutError as PlaywrightTimeoutError, e
 
 from pages.base_page import BasePage
 
-# Labels as shown in the English UI; adjust if the site uses different copy.
+# Labels
 _WANT_LABEL = "Want to Read"
 _ALREADY_LABELS = ("Already Read", "Have read")
 
@@ -27,7 +27,6 @@ class BookDetailPage(BasePage):
 
     _DROPPER = ".my-books-dropper"
     _DROPPER_DISABLED = ".generic-dropper--disabled"
-    # Legacy `.dropclick` was renamed in the generic dropper (PR ~8181).
     _DROPCLICK = ".generic-dropper__dropclick, .dropclick"
     _MENU = ".generic-dropper__dropdown"
 
@@ -73,8 +72,7 @@ class BookDetailPage(BasePage):
             .first
         )
         await dropper.wait_for(state="visible", timeout=20_000)
-        # My Books JS loads via async import(); wait until init ran (see my-books/index.js:
-        # initialize() before getListPartials; loading row removed when partials return).
+    
         loading = dropper.locator(".list-loading-indicator")
         if await loading.count() > 0:
             await loading.first.wait_for(state="hidden", timeout=45_000)

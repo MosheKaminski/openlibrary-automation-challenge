@@ -2,33 +2,33 @@
   "measurements": [
     {
       "url": "https://openlibrary.org/search?q=dune",
-      "first_paint_ms": 3432.0,
-      "dom_content_loaded_ms": 5048.799999982119,
-      "load_event_ms": 5050.5,
+      "first_paint_ms": 3280.0,
+      "dom_content_loaded_ms": 4457.699999988079,
+      "load_event_ms": 5170.199999988079,
       "timing_source": "navigation-entry",
-      "load_time_ms": 5057.463800010737,
+      "load_time_ms": 5191.534500016132,
       "threshold_ms": 3000,
       "http_status": 200,
       "name": "search"
     },
     {
       "url": "https://openlibrary.org/works/OL82563W",
-      "first_paint_ms": 4076.0,
-      "dom_content_loaded_ms": 5276.300000011921,
-      "load_event_ms": 6529.699999988079,
+      "first_paint_ms": 3868.0,
+      "dom_content_loaded_ms": 5141.199999988079,
+      "load_event_ms": 5153.0999999940395,
       "timing_source": "navigation-entry",
-      "load_time_ms": 6535.614599997643,
+      "load_time_ms": 5178.810599987628,
       "threshold_ms": 2500,
       "http_status": 200,
       "name": "book"
     },
     {
       "url": "https://openlibrary.org/account/books/want-to-read",
-      "first_paint_ms": 3020.0,
-      "dom_content_loaded_ms": 4140.5,
-      "load_event_ms": 4140.800000011921,
+      "first_paint_ms": 3212.0,
+      "dom_content_loaded_ms": 4403.700000017881,
+      "load_event_ms": 5087.300000011921,
       "timing_source": "navigation-entry",
-      "load_time_ms": 4148.692899994785,
+      "load_time_ms": 5106.774300016696,
       "threshold_ms": 2000,
       "http_status": 200,
       "name": "reading-list"
@@ -188,6 +188,196 @@
           "load_event_ms": 4140.800000011921,
           "timing_source": "navigation-entry",
           "load_time_ms": 4148.692899994785,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T16:55:40.531237+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 4196.0,
+          "dom_content_loaded_ms": 5396.799999982119,
+          "load_event_ms": 5397.899999976158,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5406.98309999425,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 3836.0,
+          "dom_content_loaded_ms": 4938.200000017881,
+          "load_event_ms": 6009.300000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 6015.282899985323,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 3076.0,
+          "dom_content_loaded_ms": 4202.4000000059605,
+          "load_event_ms": 4203.0,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 4209.478600008879,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T18:47:37.357760+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 4008.0,
+          "dom_content_loaded_ms": 4882.700000017881,
+          "load_event_ms": 5645.9000000059605,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5662.809600005858,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 5180.0,
+          "dom_content_loaded_ms": 5591.200000017881,
+          "load_event_ms": 6917.0,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 6934.159500000533,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 2840.0,
+          "dom_content_loaded_ms": 4677.800000011921,
+          "load_event_ms": 5541.800000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5568.714000022737,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T18:51:25.476357+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 3520.0,
+          "dom_content_loaded_ms": 4254.800000011921,
+          "load_event_ms": 5163.800000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5182.994800008601,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 4028.0,
+          "dom_content_loaded_ms": 4670.0999999940395,
+          "load_event_ms": 5896.4000000059605,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5911.753399996087,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 2644.0,
+          "dom_content_loaded_ms": 3255.0999999940395,
+          "load_event_ms": 3905.9000000059605,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 3922.655100002885,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T20:43:56.909608+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 3768.0,
+          "dom_content_loaded_ms": 5368.300000011921,
+          "load_event_ms": 6198.800000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 6233.2090999989305,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 3584.0,
+          "dom_content_loaded_ms": 4221.799999982119,
+          "load_event_ms": 5644.299999982119,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5674.910900008399,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 3040.0,
+          "dom_content_loaded_ms": 3646.0999999940395,
+          "load_event_ms": 4356.0999999940395,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 4381.495899986476,
+          "threshold_ms": 2000,
+          "http_status": 200,
+          "name": "reading-list"
+        }
+      ]
+    },
+    {
+      "created_at": "2026-04-14T20:51:01.197933+00:00",
+      "measurements": [
+        {
+          "url": "https://openlibrary.org/search?q=dune",
+          "first_paint_ms": 3280.0,
+          "dom_content_loaded_ms": 4457.699999988079,
+          "load_event_ms": 5170.199999988079,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5191.534500016132,
+          "threshold_ms": 3000,
+          "http_status": 200,
+          "name": "search"
+        },
+        {
+          "url": "https://openlibrary.org/works/OL82563W",
+          "first_paint_ms": 3868.0,
+          "dom_content_loaded_ms": 5141.199999988079,
+          "load_event_ms": 5153.0999999940395,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5178.810599987628,
+          "threshold_ms": 2500,
+          "http_status": 200,
+          "name": "book"
+        },
+        {
+          "url": "https://openlibrary.org/account/books/want-to-read",
+          "first_paint_ms": 3212.0,
+          "dom_content_loaded_ms": 4403.700000017881,
+          "load_event_ms": 5087.300000011921,
+          "timing_source": "navigation-entry",
+          "load_time_ms": 5106.774300016696,
           "threshold_ms": 2000,
           "http_status": 200,
           "name": "reading-list"

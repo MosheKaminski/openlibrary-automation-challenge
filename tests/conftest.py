@@ -12,6 +12,7 @@ import pytest
 import pytest_asyncio
 from playwright.async_api import Page, async_playwright
 
+from utils.report_paths import ALLURE_RESULTS_DIR
 from utils.session_paths import resolve_storage_state_path
 
 try:
@@ -29,7 +30,7 @@ def pytest_configure() -> None:
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """Append Allure environment metadata after result files are written."""
-    out = _REPO_ROOT / "allure-results"
+    out = ALLURE_RESULTS_DIR
     if not out.is_dir():
         return
     lines = [

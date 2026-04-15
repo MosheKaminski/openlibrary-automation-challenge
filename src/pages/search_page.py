@@ -129,8 +129,12 @@ class SearchPage(BasePage):
                 break
 
             next_handle = await self.page.query_selector(
-                "a[title='Next'], a[aria-label='Next'], .pagination a:has-text('Next')"
+                "a.ChoosePage[data-ol-link-track='Pager|Next']"
             )
+            if not next_handle:
+                next_handle = await self.page.query_selector(
+                    "a[title='Next'], a[aria-label='Next'], .pagination a:has-text('Next')"
+                )
             if not next_handle:
                 next_handle = await self.page.query_selector("a.next, .next-page")
             if next_handle and len(collected) < limit:

@@ -53,7 +53,7 @@ The project uses a 3-layer OOP design: page objects in `src/pages/` handle UI in
 
 ## Assignment artifacts
 
-- **Allure run report:** every `python -m pytest tests` writes raw results under `allure-results/`. Build HTML with `python scripts/generate_allure_report.py` (needs a **JRE** plus [Allure CLI](https://docs.qameta.io/allure/#_installing_a_commandline) on `PATH`, or Node.js for `npx allure-commandline`). Open `allure-report/index.html`. For a quick view without generating files: `allure serve allure-results` (same Java/CLI requirement).
+- **Allure run report:** every `python -m pytest tests` writes raw results under `reports/allure-results/`. Build HTML with `python scripts/generate_allure_report.py` (needs a **JRE** plus [Allure CLI](https://docs.qameta.io/allure/#_installing_a_commandline) on `PATH`, or Node.js for `npx allure-commandline`). Serve `reports/allure-report/` over HTTP (e.g. `cd reports/allure-report` then `python -m http.server 8080`) — do not open `index.html` via `file://`. Quick view: `allure serve reports/allure-results` (same Java/CLI requirement).
 - `performance_report.json` — produce via `write_performance_report` after collecting measurements.
 - `ReadMeAIBugs.md` — static review of the intentionally buggy sample code from the brief.
 

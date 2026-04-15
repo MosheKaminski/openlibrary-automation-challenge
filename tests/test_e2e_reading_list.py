@@ -11,6 +11,7 @@ from utils.session_paths import resolve_storage_state_path
 from flows import (
     add_books_to_reading_list,
     assert_reading_list_count,
+    clear_already_read_list,
     clear_reading_lists,
     search_books_by_title_under_year,
 )
@@ -64,3 +65,34 @@ async def test_search_add_books_verify_want_to_read_shelf() -> None:
 
     with allure.step("Verify shelf count"):
         await assert_reading_list_count(expected_count=len(urls))
+
+
+@pytest.mark.asyncio
+async def test_search_add_books_random_shelves_combined_count() -> None:
+    if resolve_storage_state_path() is None:
+        pytest.skip(
+            "No session file. Run: python scripts/save_storage_state.py "
+            "(or set STORAGE_STATE_PATH to your JSON).",
+        )
+
+    data = load_data_file(_DATA)
+    search_cfg = data["search"]
+    query = str(search_cfg["query"])
+    max_year = int(search_cfg["max_year"])
+    limit = min(int(search_cfg.get("limit", 5)), 3)
+
+    await clear_reading_lists()
+    await clear_already_read_list()
+
+    urls = await search_books_by_title_under_year(query, max_year, limit=limit)
+    assert urls
+
+    await add_books_to_reading_list(urls, random_shelves=True)
+    stats = last_shelf_add_stats()
+    assert stats.want_to_read + stats.already_read == len(urls)
+
+    with allure.step("Verify Want + Already Read totals on shelves"):
+        await assert_reading_list_count(
+            expected_count=len(urls),
+            include_already_read=True,
+        )

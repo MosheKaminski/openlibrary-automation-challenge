@@ -88,6 +88,49 @@ class ReadingListPage(BasePage):
             removed += before - after
         return removed
 
+    async def clear_already_read(self, *, max_items: int = 50) -> int:
+        """Best-effort cleanup of Already Read shelf entries."""
+        await self.open_already_read()
+        removed = 0
+        for _ in range(max_items):
+            before = await self.count_books(shelf="already-read")
+            if before <= 0:
+                break
+            row = self.page.locator(self._shelf_rows).first
+            if await row.count() == 0:
+                break
+            remove_btn = row.locator(
+                "form.reading-log button[type='submit'], "
+                "button:has-text('Remove'), a:has-text('Remove')"
+            ).first
+            if await remove_btn.count() == 0:
+                break
+            await remove_btn.click()
+            try:
+                await self.page.wait_for_function(
+                    """() => {
+                        const body = document.body?.innerText || '';
+                        return !/\\bSaving\\b/i.test(body);
+                    }""",
+                    timeout=4_000,
+                )
+            except Exception:
+                pass
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=4_000)
+            except Exception:
+                pass
+            await self.page.reload(wait_until="load")
+            try:
+                await self.page.wait_for_load_state("networkidle", timeout=4_000)
+            except Exception:
+                pass
+            after = await self.count_books(shelf="already-read")
+            if after >= before:
+                break
+            removed += before - after
+        return removed
+
     async def assert_shelf_count(self, expected: int, *, shelf: str = "want-to-read") -> None:
         """Open a shelf and assert total count with retry for eventual consistency."""
         await self.open_shelf(shelf)
@@ -159,6 +202,21 @@ class ReadingListPage(BasePage):
                 jd = await resp.json()
                 if isinstance(jd, dict) and "numFound" in jd:
                     return int(jd["numFound"])
+        except Exception:
+            pass
+        try:
+            if shelf == "want-to-read":
+                side = self.page.locator(
+                    "a[data-ol-link-track='MyBooksSidebar|WantToRead'] > span.li-count"
+                ).first
+            else:
+                side = self.page.locator(
+                    "a[data-ol-link-track='MyBooksSidebar|AlreadyRead'] > span.li-count"
+                ).first
+            if await side.count() > 0:
+                raw = (await side.inner_text()).strip()
+                if raw.isdigit():
+                    return int(raw)
         except Exception:
             pass
         try:

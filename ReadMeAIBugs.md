@@ -2,16 +2,16 @@
 
 This document lists concrete bugs, why they are important, and a high-quality fix approach.
 
-## 1. Constructor name breaks initialization (critical)
+## 1. Wrong work URL path (critical)
 
 **Problem**  
-`BookSearchPage` defines `_init_(self, page)` instead of `__init__`. Python only calls `__init__`, so page fields are never initialized and methods fail with `AttributeError`.
+Sample code builds edition links as `/work/{id}` (singular) or omits the `OL…W` key shape Open Library uses. Real work pages live under `/works/OL82563W` (plural `works`, OL-prefixed id).
 
 **Why it matters**  
-The page object is unusable and every downstream flow fails immediately.
+Navigation404s or lands on the wrong resource, so search/collection steps never exercise the intended UI.
 
 **Recommended fix**  
-Rename to `__init__`, initialize all required locators there, and add a smoke test that instantiates the page object and calls a no-op method to catch constructor regressions.
+Normalize hrefs with a regex for `/works/OL\d+W`, resolve relative URLs against `https://openlibrary.org`, and add one assertion that the final URL matches `/works/OL` before interacting with the reading log.
 
 ## 2. Unsafe year parsing and wrong comparison boundary (major)
 
